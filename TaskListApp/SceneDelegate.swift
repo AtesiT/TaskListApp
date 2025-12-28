@@ -13,7 +13,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //  Делаем ключевым окно и видимым
         window?.makeKeyAndVisible()
         //  Определяем стартовый VC, с которого запускается приложение
-        window?.rootViewController = TaskListViewController()
+        //  По Guidline Apple, необходимо задавать перед TableVC - UINavigationController
+        window?.rootViewController = UINavigationController(rootViewController: TaskListViewController())
         
     }
 
