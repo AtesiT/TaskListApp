@@ -8,7 +8,9 @@ final class TaskListViewController: UITableViewController {
         setupNavigationBar()
     }
 
-
+    @objc private func addNewTask() {
+        
+    }
 }
 
 //  MARK: - Setup UI
@@ -16,7 +18,8 @@ private extension TaskListViewController {
     func setupNavigationBar() {
         title = "Task List"
         navigationController?.navigationBar.prefersLargeTitles = true
-        //  Кастомизация внешнего вида
+        
+        //  Кастомизация внешнего вида NavigationBarAppearance
         let navBarAppearence = UINavigationBarAppearance()
         navBarAppearence.configureWithOpaqueBackground()
         
@@ -32,6 +35,14 @@ private extension TaskListViewController {
         
         navigationController?.navigationBar.standardAppearance = navBarAppearence
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearence
+        
+        //  Добавление кнопки в Navigation Bar
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(addNewTask)
+        )
+        navigationController?.navigationBar.tintColor = .white
     }
 }
 
