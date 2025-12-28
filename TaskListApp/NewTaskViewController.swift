@@ -10,9 +10,14 @@ final class NewTaskViewController: UIViewController {
     }()
     
     private lazy var saveButton: UIButton = {
-        var buttonConfig = UIButton.Configuration.filled()
-        buttonConfig.title = "Save Task"
+        //  Установка атрибутов для кнопки
+        var attributes = AttributeContainer()
+        attributes.font = UIFont.boldSystemFont(ofSize: 18)
         
+        //  Создание кнопки
+        var buttonConfig = UIButton.Configuration.filled()
+        buttonConfig.baseBackgroundColor = .milkBlue
+        buttonConfig.attributedTitle = AttributedString("Save Task", attributes: attributes)
         
         let button = UIButton(configuration: buttonConfig, primaryAction: UIAction {[unowned self] _ in
             save()
