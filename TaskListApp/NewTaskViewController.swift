@@ -1,6 +1,8 @@
 import UIKit
+import CoreData
 
 final class NewTaskViewController: UIViewController {
+    
     private lazy var taskTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "New Task"
@@ -10,37 +12,25 @@ final class NewTaskViewController: UIViewController {
     }()
     
     private lazy var saveButton: UIButton = {
-        //  Установка атрибутов для кнопки
-        var attributes = AttributeContainer()
-        attributes.font = UIFont.boldSystemFont(ofSize: 18)
-        
-        //  Создание кнопки
-        var buttonConfig = UIButton.Configuration.filled()
-        buttonConfig.baseBackgroundColor = .milkBlue
-        buttonConfig.attributedTitle = AttributedString("Save Task", attributes: attributes)
-        
-        let button = UIButton(configuration: buttonConfig, primaryAction: UIAction {[unowned self] _ in
-            save()
-        })
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+        let filledButtonFactory = FilledButtonFactory(
+            title: "Save Task",
+            color: .milkBlue,
+            action: UIAction { [unowned self] _ in
+                save()
+            }
+        )
+        return filledButtonFactory.createButton()
     }()
     
     private lazy var cancelButton: UIButton = {
-        //  Установка атрибутов для кнопки
-        var attributes = AttributeContainer()
-        attributes.font = UIFont.boldSystemFont(ofSize: 18)
-        
-        //  Создание кнопки
-        var buttonConfig = UIButton.Configuration.filled()
-        buttonConfig.baseBackgroundColor = .milkRed
-        buttonConfig.attributedTitle = AttributedString("Cancel", attributes: attributes)
-        
-        let button = UIButton(configuration: buttonConfig, primaryAction: UIAction {[unowned self] _ in
-            dismiss(animated: true)
-        })
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+        let filledButtonFactory = FilledButtonFactory(
+            title: "Cancel",
+            color: .milkRed,
+            action: UIAction { [unowned self] _ in
+                dismiss(animated: true)
+            }
+        )
+        return filledButtonFactory.createButton()
     }()
 
     
@@ -52,6 +42,10 @@ final class NewTaskViewController: UIViewController {
     }
     
     private func save() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let task = ToDoTask(context: appDelegate.persistentContainer.viewContext)
+        task.title = taskTextField.text
+        appDelegate.saveContext()
         
         dismiss(animated: true)
     }
