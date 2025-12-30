@@ -1,6 +1,10 @@
 import UIKit
 import CoreData
 
+protocol NewTaskViewControllerDelegate: AnyObject {
+    func reloadData()
+}
+
 final class TaskListViewController: UITableViewController {
     
     private var taskList: [ToDoTask] = []
@@ -17,7 +21,7 @@ final class TaskListViewController: UITableViewController {
     @objc private func addNewTask() {
         let newTaskVC = NewTaskViewController()
         present(newTaskVC, animated: true)
-        
+        newTaskVC.delegate = self
     }
     
     private func fetchData() {
@@ -77,3 +81,12 @@ private extension TaskListViewController {
     }
 }
 
+
+extension TaskListViewController: NewTaskViewControllerDelegate {
+    func reloadData() {
+        //  Если данных огромное количество, то должен быть блок замыкания, внутри которого мы выполним функцию для обновления данных в таблице
+        //  Потому что метод должен выполниться после метода fetchData, т.к. если данных много, то если данные могут не успеть загрузиться, а таблица уже обновится
+        fetchData()
+        tableView.reloadData()
+    }
+}

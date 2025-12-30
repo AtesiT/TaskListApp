@@ -2,6 +2,8 @@ import UIKit
 import CoreData
 
 final class NewTaskViewController: UIViewController {
+    weak var delegate: NewTaskViewControllerDelegate?
+    
     private lazy var taskTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "New Task"
@@ -45,6 +47,7 @@ final class NewTaskViewController: UIViewController {
         let task = ToDoTask(context: appDelegate.persistentContainer.viewContext)
         task.title = taskTextField.text
         appDelegate.saveContext()
+        delegate?.reloadData()
         dismiss(animated: true)
     }
     
